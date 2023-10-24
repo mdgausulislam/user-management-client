@@ -12,18 +12,33 @@ function App() {
   const handleAddUser = event => {
     event.preventDefault();
     const userForm = event.target;
-    const name=userForm.name.value;
-    const email=userForm.email.value;
-    const user={name,email}
-    fetch('http://localhost:5000/user',{
-      method:'POST',
-      headers:{
-        'content-type':'application/json'
-      },
-      body:JSON.stringify(user);
-    })
+    const name = userForm.name.value;
+    const email = userForm.email.value;
+    const user = { name, email }
+    // fetch('http://localhost:5000/user',{
+    //   method:'POST',
+    //   headers:{
+    //     'content-type':'application/json'
+    //   },
+    //   body:JSON.stringify(user)
+    // })
 
-    console.log(name,email);
+    fetch('http://localhost:5000/user', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify(user)
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+        const newUser = [...user, data]
+        setUser(newUser);
+        userForm.reset();
+      })
+
+    console.log(name, email);
   }
 
   return (
